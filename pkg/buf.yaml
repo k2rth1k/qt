@@ -1,0 +1,8 @@
+version: v1beta1
+name: buf.build/k2rth1k/qt
+build:
+  roots:
+    - proto
+deps:
+  - buf.build/googleapis/googleapis
+  - buf.build/grpc-ecosystem/grpc-gateway
