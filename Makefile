@@ -12,7 +12,7 @@ build:	proto
 	@echo "successfully built application"
 
 .Phony: run
-run: build
+run:
 	@echo "starting service....."
 	@./build/arm64/qt
 
