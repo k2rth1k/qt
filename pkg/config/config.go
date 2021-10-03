@@ -36,7 +36,7 @@ func SetupConfig() {
 	os.Setenv("REFRESH_SECRET", "mcmvmkmsdnfsdmfdsjf")
 	cfg := &conf
 	dbConfig := SQLConfig{
-		Host:    getConfigs("postgres_host", "localhost"),
+		Host:    getConfigs("postgres_host", "db"),
 		Port:    getConfigs("postgres_port", "5432"),
 		DBName:  getConfigs("postgres_db", "qt"),
 		User:    getConfigs("postgres_user", "qt"),
