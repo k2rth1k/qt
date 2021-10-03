@@ -34,7 +34,7 @@ Proto file are located [pkg/proto/](proto/). To generate go code run:
 
 The output is:
 
-    ./bin/linux_amd64/qt
+    ./bin/linux_arm64/qt
 
 ### How to Create Postgres Database
 Follow this [link](https://docs.mattermost.com/install/install-ubuntu-1604-postgresql.html?utm_source=google&utm_medium=cpc&obility_id=126977717891&utm_campaign=&utm_adgroup=&utm_term=&utm_content=516316717186&gclid=Cj0KCQjwvr6EBhDOARIsAPpqUPFZVh2j6wKilt7pBnCThPgKv_PnSvkHV6cIh-cXg6oAwPHbXBoJhIQaAswYEALw_wcB) to set up postgresql server.

@@ -15,7 +15,7 @@ func ServerInterceptor(ctx context.Context,
 	info *grpc.UnaryServerInfo,
 	handler grpc.UnaryHandler) (interface{}, error) {
 	// Skip authorize when GetJWT is requested
-	if info.FullMethod != "/proto.QuickTrade/Login" && info.FullMethod != "/proto.QuickTrade/CreateUser" {
+	if info.FullMethod != "/quick_trade.QuickTrade/Login" && info.FullMethod != "/quick_trade.QuickTrade/CreateUser" {
 
 		valid := ValidateToken(ctx)
 		if !valid {

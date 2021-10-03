@@ -52,3 +52,14 @@ test:
 	for i in $$(find . -maxdepth 4 -mindepth 1 -type f -name '*_test.go' | sed -r 's|/[^/]+$$||' |sort |uniq); do \
   				go test -v $$i; \
     done;
+
+>PHONY: sql
+sql:
+	if ( test -f "init.sql" ); then \
+        	> init.sql; \
+	fi;
+	for i in $$(find . -type f -name "*up.sql"); do \
+  		cat $$i >> init.sql; \
+  		echo "" >> init.sql;    \
+  		echo "" >> init.sql;    \
+    done;
