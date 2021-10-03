@@ -1,7 +1,8 @@
 package config
 
 import (
-	"github.com/spf13/viper"
+	"github.com/joho/godotenv"
+	"log"
 	"os"
 )
 
@@ -21,37 +22,33 @@ type ServiceConfig struct {
 	DBConfig SQLConfig
 }
 
-func setViperDefaults() {
-	// viper is case-insensitive
+func getConfigs(key, defaultValue string) string {
+	err := godotenv.Load(".env")
 
-	// service configuration
-	viper.SetDefault("grpc-port", 50051)
-	viper.SetDefault("rest-port", 50443)
-	// empty to listen on all interfaces
-	// postgress configuration
-	viper.SetDefault("postgres_host", "localhost")
-	viper.SetDefault("postgres_port", "5432")
-	viper.SetDefault("postgres_db", "quick_trade")
-	viper.SetDefault("postgres_user", "quick_trade")
-	viper.SetDefault("postgres_password", "quick_trade")
-	viper.SetDefault("postgres_ssl_mode", "disable")
-	os.Setenv("ACCESS_SECRET", "jdnfksdmfksd")
-	os.Setenv("REFRESH_SECRET", "mcmvmkmsdnfsdmfdsjf")
-	// kubernetes namespace
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+	dsn := os.Getenv(key)
+	if len(dsn) == 0 {
+		dsn = defaultValue
+	}
+	return dsn
 }
+
 func SetupConfig() {
 	// viper is case-insensitive
 	// viper will check in the following order:
 	// override, flag, env, config file, key/value store, default
-	setViperDefaults()
+	os.Setenv("ACCESS_SECRET", "jdnfksdmfksd")
+	os.Setenv("REFRESH_SECRET", "mcmvmkmsdnfsdmfdsjf")
 	cfg := &conf
 	dbConfig := SQLConfig{
-		Host:    viper.GetString("postgres_host"),
-		Port:    viper.GetString("postgres_port"),
-		DBName:  viper.GetString("postgres_db"),
-		User:    viper.GetString("postgres_user"),
-		Pass:    viper.GetString("postgres_password"),
-		SSLMode: viper.GetString("postgres_ssl_mode"),
+		Host:    getConfigs("postgres_host", "localhost"),
+		Port:    getConfigs("postgres_port", "5435"),
+		DBName:  getConfigs("postgres_db", "qt"),
+		User:    getConfigs("postgres_user", "qt"),
+		Pass:    getConfigs("postgres_password", "qt"),
+		SSLMode: getConfigs("postgres_ssl_mode", "disable"),
 	}
 	cfg.DBConfig = dbConfig
 }
