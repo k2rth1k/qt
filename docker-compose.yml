@@ -1,19 +1,18 @@
 version: "3"
 services:
+
   db:
     image: postgres
-    expose:
-      - "5432"
     environment:
       POSTGRES_PASSWORD: qt
       POSTGRES_DB: qt
       POSTGRES_USER: qt
-      POSTGRES_SSL_MODE: disable
-
+      POSTGRES_AUTH_MODE: trust
+    restart: always
 
   qt:
     build: ./app/build/
-    command: make run
+    command: make test
     depends_on:
       - "db"
       - "redis"
@@ -27,13 +26,12 @@ services:
       postgres_password: qt
       postgres_db: qt
       postgres_user: qt
-      POSTGRES_SSL_MODE: disable
+      postgres_ssl_mode: disable
       postgres_host: "db"
+      postgres_port: "5433"
       REDIS_DSN: "redis:6379"
 
 
   redis:
+    restart: always
     image: redis
-    expose:
-      - "6379"
-

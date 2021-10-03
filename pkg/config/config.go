@@ -1,8 +1,6 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
-	"log"
 	"os"
 )
 
@@ -23,11 +21,6 @@ type ServiceConfig struct {
 }
 
 func getConfigs(key, defaultValue string) string {
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
 	dsn := os.Getenv(key)
 	if len(dsn) == 0 {
 		dsn = defaultValue
@@ -44,7 +37,7 @@ func SetupConfig() {
 	cfg := &conf
 	dbConfig := SQLConfig{
 		Host:    getConfigs("postgres_host", "localhost"),
-		Port:    getConfigs("postgres_port", "5435"),
+		Port:    getConfigs("postgres_port", "5432"),
 		DBName:  getConfigs("postgres_db", "qt"),
 		User:    getConfigs("postgres_user", "qt"),
 		Pass:    getConfigs("postgres_password", "qt"),
