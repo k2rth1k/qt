@@ -63,3 +63,7 @@ sql:
   		echo "" >> init.sql;    \
   		echo "" >> init.sql;    \
     done;
+
+>PHONY: docker
+docker: sql
+		$(ECHO) docker-compose up
