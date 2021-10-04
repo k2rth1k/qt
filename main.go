@@ -8,6 +8,7 @@ import (
 	"github.com/k2rth1k/qt/utilities/authentication"
 	"github.com/k2rth1k/qt/utilities/log"
 	"net/http"
+	"os"
 
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -16,11 +17,9 @@ import (
 )
 
 var (
-	// command-line options:
+	// Logger command-line options:
 	// gRPC server endpoint
-	grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:50444", "gRPC server endpoint")
-	httpServerEndpoint = flag.String("http-server-endpoint", "localhost:50443", "http server endpoint")
-	Logger             = log.InitZapLog()
+	Logger = log.InitZapLog()
 )
 
 func run() error {
@@ -29,25 +28,30 @@ func run() error {
 	defer cancel()
 	// Register gRPC server endpoint
 	// Note: Make sure the gRPC server is running properly and accessible
+	host := "localhost"
+	if len(os.Getenv("host")) != 0 {
+		host = os.Getenv("host")
+	}
+	grpcServerEndpoint := host + ":50444"
+	httpServerEndpoint := host + ":50443"
 	mux := runtime.NewServeMux()
-
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := qt.RegisterQuickTradeHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err := qt.RegisterQuickTradeHandlerFromEndpoint(ctx, mux, grpcServerEndpoint, opts)
 	if err != nil {
 		return err
 	}
-	go api.NewServer(*grpcServerEndpoint, withServerUnaryInterceptor())
+	go api.NewServer(grpcServerEndpoint, withServerUnaryInterceptor())
 
-	Logger.Info("starting grpcServer at port " + *grpcServerEndpoint)
+	Logger.Info("starting grpcServer at port " + grpcServerEndpoint)
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	Logger.Info("starting httpServer at port " + *httpServerEndpoint)
+	Logger.Info("starting httpServer at port " + httpServerEndpoint)
 
 	corsWrapper := cors.New(cors.Options{
 		AllowedMethods: []string{"GET", "POST"},
 		AllowedHeaders: []string{"Content-Type", "Origin", "Accept", "*"},
 	})
 
-	err = http.ListenAndServe(*httpServerEndpoint, corsWrapper.Handler(mux))
+	err = http.ListenAndServe(httpServerEndpoint, corsWrapper.Handler(mux))
 	if err != nil {
 		Logger.Error("failed to start http server due to err: ", err)
 		return err

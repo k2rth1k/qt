@@ -23,8 +23,11 @@ services:
       - "redis"
       - "db"
     ports:
-      - "50443:50443"
-      - "50444:50444"
+      - "0.0.0.0:50443:50443"
+      - "0.0.0.0:50444:50444"
+    expose:
+      - "50443"
+      - "50444"
     environment:
       postgres_password: qt
       postgres_db: qt
