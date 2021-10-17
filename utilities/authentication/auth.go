@@ -65,17 +65,6 @@ func VerifyToken(ctx context.Context) (*jwt.Token, error) {
 	return token, nil
 }
 
-func TokenValid(ctx context.Context) error {
-	token, err := VerifyToken(ctx)
-	if err != nil {
-		return err
-	}
-	if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
-		return err
-	}
-	return nil
-}
-
 func ValidateToken(ctx context.Context) bool {
 	ad, err := ExtractTokenMetadata(ctx)
 	if err != nil {

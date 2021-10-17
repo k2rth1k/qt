@@ -1,18 +1,24 @@
-name: Go
-
-on: [ push ]
+on: [push]
 
 jobs:
 
   build:
-    runs-on: bufbuild/buf
+
+    runs-on: ubuntu-latest
+
+
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
+      - name: Build the docker-compose stack
+        run: docker-compose  up -d
+      - name: Check running containers
+        run: docker ps -a
+      - name: Check logs
+        run: docker logs backend
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.17
-
-    - name: Build
-      run: make build
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: docker exec -it qt_qt_1 make test

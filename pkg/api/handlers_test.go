@@ -24,7 +24,8 @@ func TestDeleteUsers(t *testing.T) {
 			t.Fatal("failed to close sql connection")
 		}
 	}()
-	sql.DeleteAllUsers()
+	err := sql.DeleteAllUsers()
+	assert.Equal(t, err, nil)
 }
 
 func TestQuickTradeService_CreateUser(t *testing.T) {
@@ -172,8 +173,8 @@ func NewSetup(t *testing.T) *db.SQL {
 
 func getCustomerUserRequest() *qt.CreateUserRequest {
 	return &qt.CreateUserRequest{
-		FirstName: fmt.Sprintf("firstName"),
-		LastName:  fmt.Sprintf("lastName"),
+		FirstName: "firstName",
+		LastName:  "lastName",
 		Email:     fmt.Sprintf("email-%s@email.com", uuid.New().String()),
 		Phone:     "8" + fmt.Sprintf("%08d", rand.Intn(100000000)),
 		Password:  uuid.New().String()[0:15],

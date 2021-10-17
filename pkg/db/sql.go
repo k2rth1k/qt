@@ -26,10 +26,6 @@ var (
 	ErrUserAlreadyExists = errors.New("User already exists")
 )
 
-var (
-	selectUsersDotStar = ""
-)
-
 func NewSQL(c config.SQLConfig) (*SQL, error) {
 	s := &SQL{logger: log.InitZapLog()}
 	conn := fmt.Sprintf(
