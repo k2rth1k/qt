@@ -14,7 +14,5 @@ jobs:
         run: docker-compose  up -d
       - name: Check running containers
         run: docker ps -a
-      - name: Check logs
-        run: docker logs qt_qt_1
       - name: test
         run: docker exec qt_qt_1 make test
