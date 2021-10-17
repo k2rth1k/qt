@@ -19,7 +19,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: myimage
-          path: /tmp/myimage.tar
+          path: myimage.tar
 
 
   test:
@@ -30,7 +30,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: myimage
-          path: /tmp
+          path: myimage.tar
       - name: Check running containers
         run: docker ps -a
       - name: test
