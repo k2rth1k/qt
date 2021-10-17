@@ -16,7 +16,7 @@ jobs:
       - name: Check logs
         run: docker logs qt_qt_1
       - name: test
-        run: docker exec -it qt_qt_1 make test
+        run: docker exec qt_qt_1 make test
 #      - name: Upload artifact
 #        uses: actions/upload-artifact@v2
 #        with:
