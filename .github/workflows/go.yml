@@ -20,5 +20,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Check running containers
+        run: docker ps -a
       - name: test
         run: docker exec -it qt_qt_1 make test
