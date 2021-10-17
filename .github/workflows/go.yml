@@ -15,11 +15,22 @@ jobs:
         run: docker ps -a
       - name: Check logs
         run: docker logs qt_qt_1
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: myimage
+          path: /tmp/myimage.tar
+
 
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: myimage
+          path: /tmp
       - name: Check running containers
         run: docker ps -a
       - name: test
